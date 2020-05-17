@@ -183,9 +183,20 @@ function isInsideCircle(circle, point) {
  *   'entente' => null
  */
 function findFirstSingleChar(str) {
-  const NoSpacesStr = str.replace(/\s/g, '');
-  const uniq = [...new Set(NoSpacesStr.split(''))];
-  return uniq[0];
+  const ObjOfChars = str.split('').reduce((acc, item, index) => {
+    const obj = acc;
+    if (!obj[item]) {
+      obj[item] = {};
+    }
+    obj[item].index = index;
+    obj[item].numb = (obj[item].numb || 0) + 1;
+    return obj;
+  }, {});
+  const chars = Object.keys(ObjOfChars);
+  const uniqueChars = chars.filter((item) => ObjOfChars[item].numb === 1);
+  const sortedDueToIndex = uniqueChars.sort((a, b) => ObjOfChars[a].index - ObjOfChars[b].index);
+  if (sortedDueToIndex.length > 0) return sortedDueToIndex[0];
+  return null;
 }
 
 
